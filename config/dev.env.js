@@ -4,5 +4,5 @@ var prodEnv = require('./prod.env')
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   ENDPOINT: '"http://pokeapi.co/api/v2/pokemon/?limit=8"',
-  ENDPOINTSINGLE: '"http://pokeapi.co/api/v2/pokemon/"'
+  ENDPOINTSINGLE: '"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"'
 })

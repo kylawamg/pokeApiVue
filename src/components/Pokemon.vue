@@ -1,15 +1,13 @@
 <template lang="html">
     <div class="col col-md-3">
-      <div class="box" v-if="pokemonInfo">
+      <div class="box">
         <h3>
           {{pokemonName}}
         </h3>
-        <img :src="pokemonInfo.sprites.back_default" alt="">
+        <h3>{{index}}</h3>
+        <img :src="url" alt="">
         <br>
         <button type="button" class="btn btn-primary">More info</button>
-      </div>
-      <div v-if="!pokemonInfo" class="box">
-        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
       </div>
     </div>
 </template>
@@ -20,24 +18,15 @@
     name: 'Pokemon',
     data () {
       return {
-        pokemonInfo: null
+        url: ''
       }
     },
-    props: ['pokemonName'],
-    create  () {
-      console.log('hola')
-      this.singlePokemon(this.pokemonName)
+    props: ['pokemonName', 'index', 'pokemonsId'],
+    mounted  () {
+      this.url = `${Vue.config.pokeapi.ENDPOINTSINGLE}${this.pokemonsId[this.index]}.png`
     },
     methods: {
-      singlePokemon (pokemon) {
-        return window.fetch(`${Vue.config.pokeapi.ENDPOINTSINGLE}${pokemon}`)
-        .then(response => {
-          return response.json()
-        })
-        .then(json => {
-          this.pokemonInfo = json
-        })
-      }
+
     }
   }
 </script>

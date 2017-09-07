@@ -2,8 +2,10 @@
   <div id="app">
       <h1>{{ title }}</h1>
       <div class="container">
-        <pokemon v-for="(name, index) in pokemonsName" :pokemonName="name">
+        <pokemon v-for="(name, index) in pokemonsName" :pokemonName="name" :index="index" :pokemonsId="pokemonsId">
         </pokemon>
+        <pagination @next="nextPage" @previous="previousPage">
+        </pagination>
       </div>
   </div>
 </template>
@@ -11,37 +13,78 @@
 <script>
 import Vue from 'vue'
 import Pokemon from '@/components/Pokemon'
+import Pagination from '@/components/Pagination'
 export default {
   name: 'app',
   components: {
-    Pokemon
+    Pokemon,
+    Pagination
   },
   data () {
     return {
       title: 'PokeApi with vue.js',
       pokemonsName: [],
-      pokemons: {}
+      pokemons: {},
+      pokemonsId: ['1', '2', '3', '4', '5', '6', '7', '8'],
+      offset: 0
     }
   },
   created: function () {
     this.searchPokemon('charmander')
   },
   methods: {
-    searchPokemon (pokemon) {
+    searchPokemon () {
       return window.fetch(`${Vue.config.pokeapi.ENDPOINT}`)
       .then(response => {
         return response.json()
       })
       .then(json => {
         this.pokemons = json
-        console.log(this.pokemons.results)
         for (var i = 0; i < this.pokemons.results.length; i++) {
           this.pokemonsName.push(this.pokemons.results[i].name)
         }
-        console.log(this.pokemonsName)
+      })
+    },
+    previousPage () {
+      this.pokemonsName = []
+      this.offset = this.offset - 8
+      console.log(this.pokemonsId)
+      for (var i = 0; i < this.pokemonsId.length; i++) {
+        this.pokemonsId[i] = parseInt(this.pokemonsId[i]) - 8
+        this.pokemonsId[i].toString()
+      }
+      console.log(this.pokemonsId)
+      return window.fetch(`http://pokeapi.co/api/v2/pokemon/?limit=8&offset=${this.offset}`)
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        this.pokemons = json
+        for (var i = 0; i < this.pokemons.results.length; i++) {
+          this.pokemonsName.push(this.pokemons.results[i].name)
+        }
+      })
+    },
+    nextPage () {
+      this.pokemonsName = []
+      this.offset = this.offset + 8
+      console.log(this.pokemonsName)
+      for (var i = 0; i < this.pokemonsId.length; i++) {
+        this.pokemonsId[i] = parseInt(this.pokemonsId[i]) + 8
+        this.pokemonsId[i].toString()
+      }
+      console.log(this.pokemonsId)
+      return window.fetch(`http://pokeapi.co/api/v2/pokemon/?limit=8&offset=${this.offset}`)
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        this.pokemons = json
+        for (var i = 0; i < this.pokemons.results.length; i++) {
+          this.pokemonsName.push(this.pokemons.results[i].name)
+        }
       })
     }
-
   }
 }
 </script>
