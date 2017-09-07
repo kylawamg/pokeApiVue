@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-      <h1>{{ title }}</h1>
+      <h1 class="title">{{ title }}</h1>
       <div class="container">
         <pokemon v-for="(name, index) in pokemonsName" :pokemonName="name" :index="index" :pokemonsId="pokemonsId">
+
         </pokemon>
         <pagination @next="nextPage" @previous="previousPage">
         </pagination>
@@ -90,6 +91,20 @@ export default {
 </script>
 
 <style>
+body{
+  background: linear-gradient(
+  to bottom right,
+  #2C3E50, #FD746C,
+  #FF8235, #ffff1c,
+  #92FE9D, #00C9FF,
+  #a044ff, #e73827);
+background-repeat: no-repeat;
+background-size: 1000% 1000%;
+animation: gradient 240s ease infinite;
+}
+.title{
+  color: #fff;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
